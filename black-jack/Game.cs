@@ -64,7 +64,7 @@ namespace black_jack
             Deck.RemoveAt(cardTwoIndex);
         }
 
-        public void CreateHands()
+        private void CreateHands()
         {
             int cardOneIndex = Rando.Next(Deck.Count);
             int cardTwoIndex = Rando.Next(Deck.Count);
@@ -77,6 +77,11 @@ namespace black_jack
             CreateHandForPlayer(Dealer, cardThreeIndex, cardFourIndex);
 
             Console.WriteLine(Deck.Count);
+        }
+
+        public void RunGame()
+        {
+
         }
 
         public override string ToString()

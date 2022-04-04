@@ -23,12 +23,15 @@ namespace black_jack
                 Game game = new Game(name);
 
                 // Create your hand
-                Console.WriteLine("Press \"Return\" to see your hand");
+                Console.WriteLine("Press \"Return\" to start the game!");
                 ConsoleKey createHandsKey = Console.ReadKey().Key;
 
                 if (createHandsKey == ConsoleKey.Enter)
                 {
-                    game.CreateHands();
+                    do
+                    {
+                        game.RunGame();
+                    } while (!game.GameOver);
                 }
             }
         }
