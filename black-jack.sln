@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.810.21
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "black-jack", "black-jack\black-jack.csproj", "{5A5D2E21-DE3B-4F9C-9EC9-9198151411D9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53B89AEA-A49F-4E4C-80C1-4F69051AC704}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
