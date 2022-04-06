@@ -1,19 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace black_jack
 {
     public class Hand
     {
-        public List<Card> cards { get; set; }
+        public List<Card> Cards { get; set; }
 
         public Hand()
         {
-            cards = new List<Card>();
+            Cards = new List<Card>();
         }
 
         public void AddCardToHand(Card card)
         {
-            cards.Add(card);
+            Cards.Add(card);
+        }
+
+        public override string ToString()
+        {
+            return String.Join(", ", Cards);
         }
     }
 }

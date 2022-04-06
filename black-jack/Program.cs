@@ -22,17 +22,7 @@ namespace black_jack
                 // Start the game
                 Game game = new Game(name);
 
-                // Create your hand
-                Console.WriteLine("Press \"Return\" to start the game!");
-                ConsoleKey createHandsKey = Console.ReadKey().Key;
-
-                if (createHandsKey == ConsoleKey.Enter)
-                {
-                    do
-                    {
-                        game.RunGame();
-                    } while (!game.GameOver);
-                }
+                game.RunGame();
             }
         }
     }

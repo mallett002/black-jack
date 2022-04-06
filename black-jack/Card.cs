@@ -16,7 +16,7 @@ namespace black_jack
 
         public override string ToString()
         {
-            return $"{Name} of {Suite}";
+            return $"[{Name} of {Suite}]";
         }
     }
 }
