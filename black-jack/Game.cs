@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace black_jack
 {
@@ -69,67 +70,77 @@ namespace black_jack
         {
             int cardOneIndex = Rando.Next(Deck.Count);
             int cardTwoIndex = Rando.Next(Deck.Count);
-
-
             CreateHandForPlayer(PlayerOne, cardOneIndex, cardTwoIndex);
 
             int cardThreeIndex = Rando.Next(Deck.Count);
             int cardFourIndex = Rando.Next(Deck.Count);
-
             CreateHandForPlayer(Dealer, cardThreeIndex, cardFourIndex);
 
-            Console.WriteLine($"Your hand: {PlayerOne.PlayerHand}");
-        }
 
-        private static int CompareCardsBySuite()
-        {
-            return 5;
-        }
+            int dealerValue = CalculateValue(Dealer);
 
-        private void CalculateValue()
-        {
-            Console.WriteLine("Calculating hand value");
-
-            int playerHandValue = 0;
-            PlayerOne.PlayerHand.Cards.Sort(delegate (Card first, Card second) // Put the A's last
+            while (dealerValue < 18)
             {
-                //if (first.PartName == null && second.PartName == null) return 0;
-                //else if (x.PartName == null) return -1;
-                //else if (y.PartName == null) return 1;
-                //else return x.PartName.CompareTo(y.PartName);
+                int cardIndex = Rando.Next(Deck.Count);
+                Card card = Deck[cardIndex];
 
-                if (first.Name == "A")
-                { return 1; }
+                Console.WriteLine(Deck.Count());
+                Console.WriteLine(cardIndex);
 
-                return -1;
+                Console.WriteLine("Adding a card to dealer...");
+                Dealer.AddCard(card);
+
+                dealerValue = CalculateValue(Dealer);
+            }
+
+            Console.WriteLine($"Your hand: {PlayerOne.PlayerHand}");
+            Console.WriteLine($"Dealer hand: {Dealer.PlayerHand}");
+
+            if (dealerValue > 21)
+            {
+                GameOver = true;
+
+                Console.WriteLine($"Dealer went over, winner: {PlayerOne.Name}");
+            }
+        }
+
+        private int CalculateValue(Player player)
+        {
+            Console.WriteLine($"Calculating hand value for {player.Name}");
+
+            int totalValue = 0;
+
+            player.PlayerHand.Cards.ForEach((card) =>
+            {
+                if (card.Name == "A")
+                {
+                    if (totalValue + 11 > 21)
+                    {
+                        totalValue++;
+                    }
+                    else
+                    {
+                        totalValue += 11;
+                    }
+                }
+                else
+                {
+                    int cardValue;
+
+                    bool canParse = Int32.TryParse(card.Name, out cardValue);
+
+                    if (!canParse)
+                    {
+                        totalValue += 10;
+                    }
+                    else
+                    {
+                        totalValue += cardValue;
+                    }
+                }
             });
 
-            foreach (Card card in PlayerOne.PlayerHand.Cards)
-            {
-                //    bool canParse = Int32.TryParse(card.Name, out int cardValue);
-
-                //    if (!canParse)
-                //    {
-                //        if (card.Name == "A")
-                //        {
-                //            // 1 or 11
-                //            if (playerHandValue + 11 > 21)
-                //            {
-
-                //            }
-
-                //        }
-                //        else // is face card, value is 10
-                //        {
-                //            playerHandValue += 10;
-                //        }
-                //    }
-                //    else
-                //    {
-                //        playerHandValue += cardValue;
-                //    }
-                Console.WriteLine(card.Name);
-            }
+            return totalValue;
         }
             
 
@@ -155,7 +166,16 @@ namespace black_jack
 
                     Console.WriteLine($"Your hand: {PlayerOne.PlayerHand}");
 
-                    CalculateValue();
+                    int playerOneValue = CalculateValue(PlayerOne);
+
+                    if (playerOneValue > 21)
+                    {
+                        Console.WriteLine($"{PlayerOne.Name}, you lost.");
+
+                        GameOver = true;
+
+                        return;
+                    }
 
                     PromptAnotherCard();
                     return;
@@ -164,8 +184,7 @@ namespace black_jack
                 {
                     break;
                 }
-            } while (res != "H" && res != "s");
-
+            } while (res != "h" && res != "s");
         }
 
         public void RunGame()
@@ -175,7 +194,7 @@ namespace black_jack
             CreateHands();
             PromptAnotherCard();
 
-            // ask if you want another card until you say stop
+            // ask if you want another card until you say stop or you go over
 
             // once you say stop
             // creates the dealers hand
@@ -183,6 +202,24 @@ namespace black_jack
             // compares your hand with dealers
             // if you have higher card w/o going over 21, you win
             // if you win, print "you win the game" and set gameover to true;
+
+            int playerDiff = Math.Abs(CalculateValue(PlayerOne) - 21);
+            int dealerDiff = Math.Abs(CalculateValue(Dealer) - 21);
+
+            if (playerDiff > dealerDiff)
+            {
+                Console.WriteLine($"{Dealer.Name} wins the game!");
+            }
+            else if (dealerDiff > playerDiff)
+            {
+                Console.WriteLine($"{PlayerOne.Name},  you have won the game! Nicely done!");
+            }
+            else
+            {
+                Console.WriteLine($"This game has ended in a tie");
+            }
+
+            GameOver = true;
         }
 
         public override string ToString()

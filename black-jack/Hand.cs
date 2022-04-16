@@ -14,7 +14,14 @@ namespace black_jack
 
         public void AddCardToHand(Card card)
         {
-            Cards.Add(card);
+            if (card.Name == "A")
+            {
+                Cards.Add(card);
+            }
+            else
+            {
+                Cards.Insert(0, card);
+            }
         }
 
         public override string ToString()
