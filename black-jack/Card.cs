@@ -5,13 +5,11 @@ namespace black_jack
     {
         public string Suite { get; set; }
         public string Name { get; set; }
-        int CardValue { get; set; }
 
-        public Card(string suite, string name, int cardValue)
+        public Card(string suite, string name)
         {
             Suite = suite;
             Name = name;
-            CardValue = cardValue;
         }
 
         public override string ToString()

@@ -33,22 +33,7 @@ namespace black_jack
             {
                 foreach(string name in names)
                 {
-
-                    int cardValue;
-
-                    bool canParse = Int32.TryParse(name, out cardValue);
-
-                    if (!canParse)
-                    {
-                        if (name == "A")
-                        {
-                            cardValue = 1;
-                        }
-                        else
-                        { cardValue = 10; }
-                    }
-
-                    Card card = new Card(suite, name, cardValue);
+                    Card card = new Card(suite, name);
                     Deck.Add(card);
                 }
             }
@@ -84,17 +69,11 @@ namespace black_jack
                 int cardIndex = Rando.Next(Deck.Count);
                 Card card = Deck[cardIndex];
 
-                Console.WriteLine(Deck.Count());
-                Console.WriteLine(cardIndex);
-
-                Console.WriteLine("Adding a card to dealer...");
                 Dealer.AddCard(card);
-
                 dealerValue = CalculateValue(Dealer);
             }
 
             Console.WriteLine($"Your hand: {PlayerOne.PlayerHand}");
-            Console.WriteLine($"Dealer hand: {Dealer.PlayerHand}");
 
             if (dealerValue > 21)
             {
@@ -106,7 +85,6 @@ namespace black_jack
 
         private int CalculateValue(Player player)
         {
-            Console.WriteLine($"Calculating hand value for {player.Name}");
 
             int totalValue = 0;
 
@@ -189,19 +167,8 @@ namespace black_jack
 
         public void RunGame()
         {
-            // Give you some cards
-            // give dealer some cards
             CreateHands();
             PromptAnotherCard();
-
-            // ask if you want another card until you say stop or you go over
-
-            // once you say stop
-            // creates the dealers hand
-            // if the dealer is 18 or higher, stays
-            // compares your hand with dealers
-            // if you have higher card w/o going over 21, you win
-            // if you win, print "you win the game" and set gameover to true;
 
             int playerDiff = Math.Abs(CalculateValue(PlayerOne) - 21);
             int dealerDiff = Math.Abs(CalculateValue(Dealer) - 21);
@@ -212,12 +179,14 @@ namespace black_jack
             }
             else if (dealerDiff > playerDiff)
             {
-                Console.WriteLine($"{PlayerOne.Name},  you have won the game! Nicely done!");
+                Console.WriteLine($"{PlayerOne.Name}, you have won the game! Nicely done!");
             }
             else
             {
-                Console.WriteLine($"This game has ended in a tie");
+                Console.WriteLine($"This game has ended in a draw!");
             }
+
+            Console.WriteLine($"{Dealer.Name}'s hand: {Dealer.PlayerHand}");
 
             GameOver = true;
         }
