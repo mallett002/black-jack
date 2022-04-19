@@ -53,12 +53,12 @@ namespace black_jack
 
         private void CreateHands()
         {
-            int cardOneIndex = Rando.Next(Deck.Count);
-            int cardTwoIndex = Rando.Next(Deck.Count);
+            int cardOneIndex = Rando.Next(Deck.Count - 1);
+            int cardTwoIndex = Rando.Next(Deck.Count - 1);
             CreateHandForPlayer(PlayerOne, cardOneIndex, cardTwoIndex);
 
-            int cardThreeIndex = Rando.Next(Deck.Count);
-            int cardFourIndex = Rando.Next(Deck.Count);
+            int cardThreeIndex = Rando.Next(Deck.Count - 1);
+            int cardFourIndex = Rando.Next(Deck.Count - 1);
             CreateHandForPlayer(Dealer, cardThreeIndex, cardFourIndex);
 
 
@@ -66,7 +66,7 @@ namespace black_jack
 
             while (dealerValue < 18)
             {
-                int cardIndex = Rando.Next(Deck.Count);
+                int cardIndex = Rando.Next(Deck.Count - 1);
                 Card card = Deck[cardIndex];
 
                 Dealer.AddCard(card);
@@ -77,9 +77,9 @@ namespace black_jack
 
             if (dealerValue > 21)
             {
-                GameOver = true;
-
                 Console.WriteLine($"Dealer went over, winner: {PlayerOne.Name}");
+
+                GameOver = true;
             }
         }
 
@@ -134,7 +134,7 @@ namespace black_jack
 
                 if (res == "h")
                 {
-                    int cardIndex = Rando.Next(Deck.Count);
+                    int cardIndex = Rando.Next(Deck.Count - 1);
                     Card newCard = Deck[cardIndex];
                 
                     PlayerOne.AddCard(newCard);
@@ -168,27 +168,31 @@ namespace black_jack
         public void RunGame()
         {
             CreateHands();
-            PromptAnotherCard();
 
-            int playerDiff = Math.Abs(CalculateValue(PlayerOne) - 21);
-            int dealerDiff = Math.Abs(CalculateValue(Dealer) - 21);
-
-            if (playerDiff > dealerDiff)
+            if (!GameOver)
             {
-                Console.WriteLine($"{Dealer.Name} wins the game!");
-            }
-            else if (dealerDiff > playerDiff)
-            {
-                Console.WriteLine($"{PlayerOne.Name}, you have won the game! Nicely done!");
-            }
-            else
-            {
-                Console.WriteLine($"This game has ended in a draw!");
-            }
+                PromptAnotherCard();
 
-            Console.WriteLine($"{Dealer.Name}'s hand: {Dealer.PlayerHand}");
+                int playerDiff = Math.Abs(CalculateValue(PlayerOne) - 21);
+                int dealerDiff = Math.Abs(CalculateValue(Dealer) - 21);
 
-            GameOver = true;
+                if (playerDiff > dealerDiff)
+                {
+                    Console.WriteLine($"{Dealer.Name} wins the game!");
+                }
+                else if (dealerDiff > playerDiff)
+                {
+                    Console.WriteLine($"{PlayerOne.Name}, you have won the game! Nicely done!");
+                }
+                else
+                {
+                    Console.WriteLine($"This game has ended in a draw!");
+                }
+
+                Console.WriteLine($"{Dealer.Name}'s hand: {Dealer.PlayerHand}");
+
+                GameOver = true;
+            }
         }
 
         public override string ToString()
